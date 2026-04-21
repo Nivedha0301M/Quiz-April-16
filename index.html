@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Current Affairs Quiz</title>
+
+<style>
+body { font-family: Arial; margin: 20px; }
+.question { margin-bottom: 25px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; }
+button { margin: 5px; padding: 8px 12px; cursor: pointer; }
+.correct { color: green; font-weight: bold; }
+.wrong { color: red; font-weight: bold; }
+.explanation { margin-top: 8px; color: #333; }
+</style>
+
+</head>
+
+<body>
+
+<h2>📚 Current Affairs Quiz</h2>
+<div id="quiz"></div>
+<h3 id="score"></h3>
+
+<script>
+
+let score = 0;
+let attempted = 0;
+
+const quizData = [
+
+{
+q: "Prime Minister Narendra Modi visited Uttar Pradesh and Uttarakhand on April 14, 2026, during which he inaugurated the Delhi–Dehradun Economic Corridor. Which of the following best describes this project?",
+options: [
+"A four-lane tourism corridor",
+"A six-lane, 213-kilometre economic corridor designed to reduce travel time",
+"A high-speed rail corridor",
+"A river-linking project"
+],
+answer: 1,
+exp: "The Delhi–Dehradun Economic Corridor is a 213 km long six-lane project costing ₹12,000 crore aimed at reducing travel time and improving connectivity."
+},
+
+{
+q: "The total estimated cost of the Delhi–Dehradun Economic Corridor inaugurated in April 2026 is approximately:",
+options: [
+"₹8,500 crore",
+"₹10,000 crore",
+"₹12,000 crore",
+"₹15,000 crore"
+],
+answer: 2,
+exp: "The project cost is approximately ₹12,000 crore."
+},
+
+{
+q: "The Startup India Fund of Funds 2.0 (FoF 2.0), notified by the Ministry of Commerce and Industry through DPIIT, primarily aims to support:",
+options: [
+"Agriculture subsidies",
+"Deep technology and manufacturing startups",
+"Textile exports",
+"Public sector banks"
+],
+answer: 1,
+exp: "Startup India FoF 2.0 aims to strengthen deep tech and manufacturing startups with a corpus of ₹10,000 crore."
+},
+
+{
+q: "Which institution has been designated as the primary Implementation Agency for the Startup India Fund of Funds 2.0?",
+options: [
+"Reserve Bank of India",
+"Small Industries Development Bank of India",
+"NABARD",
+"EXIM Bank"
+],
+answer: 1,
+exp: "SIDBI (Small Industries Development Bank of India) is the implementation agency."
+},
+
+{
+q: "India’s first open-access Amaravati Quantum Reference Facility operates at temperatures close to:",
+options: [
+"0°C",
+"-100°C",
+"-273°C (absolute zero)",
+"-150°C"
+],
+answer: 2,
+exp: "Quantum systems operate near absolute zero (-273°C) to maintain quantum stability."
+},
+
+{
+q: "The Indian Army’s ‘Radio Sikkim Sundari’ operates at which frequency?",
+options: [
+"87.2 FM",
+"88.4 FM",
+"90.1 FM",
+"91.5 FM"
+],
+answer: 1,
+exp: "Radio Sikkim Sundari operates at 88.4 FM and is the first border village radio station in Sikkim."
+},
+
+{
+q: "The agreement between Indian Air Force and GE Aerospace focuses on:",
+options: [
+"Drone manufacturing",
+"Pilot training",
+"Maintenance, repair, and overhaul of F404-IN20 engines",
+"Satellite systems"
+],
+answer: 2,
+exp: "The agreement establishes an MRO facility for F404-IN20 engines in India."
+},
+
+{
+q: "The 9th Indian Ocean Conference (IOC 2026) held in Mauritius focused on which theme?",
+options: [
+"Blue Economy Growth",
+"Maritime Security",
+"Collective Stewardship for Indian Ocean Governance",
+"Sustainable Coastal Development"
+],
+answer: 2,
+exp: "The theme was 'Collective Stewardship for Indian Ocean Governance'."
+},
+
+{
+q: "According to Worldline’s report, how many UPI transactions were processed in 2025?",
+options: [
+"150 billion",
+"180 billion",
+"228.5 billion",
+"300 billion"
+],
+answer: 2,
+exp: "UPI processed 228.5 billion transactions in 2025, showing massive growth."
+},
+
+{
+q: "The ‘FIFA World Cup 2026 Pixel Credit Card’ launched by Visa and HDFC Bank is available on which app?",
+options: [
+"BHIM",
+"Paytm",
+"PayZapp",
+"Google Pay"
+],
+answer: 2,
+exp: "The card is available through the PayZapp app."
+},
+
+{
+q: "The newly discovered gecko species ‘Cyrtodactylus raimonaensis’ was found near which national park?",
+options: [
+"Kaziranga",
+"Manas",
+"Raimona",
+"Orang"
+],
+answer: 2,
+exp: "The species was discovered near Raimona National Park in Assam."
+},
+
+{
+q: "The International Day of Human Space Flight is observed on April 12 to mark:",
+options: [
+"First satellite",
+"First moon landing",
+"First human spaceflight by Yuri Gagarin",
+"Mars mission"
+],
+answer: 2,
+exp: "It commemorates Yuri Gagarin’s historic spaceflight on April 12, 1961."
+},
+
+{
+q: "The International Day for Street Children was first observed in which year?",
+options: [
+"2005",
+"2008",
+"2011",
+"2015"
+],
+answer: 2,
+exp: "The first International Day for Street Children was observed in 2011."
+},
+
+{
+q: "The total investment under the MoU between Vingroup and Maharashtra is:",
+options: [
+"USD 3 billion",
+"USD 4.5 billion",
+"USD 6.5 billion",
+"USD 8 billion"
+],
+answer: 2,
+exp: "The MoU includes investments worth USD 6.5 billion."
+},
+
+{
+q: "Unified Payments Interface (UPI) was launched in which year?",
+options: [
+"2014",
+"2015",
+"2016",
+"2018"
+],
+answer: 2,
+exp: "UPI was launched in 2016 by NPCI."
+}
+
+];
+
+const quizDiv = document.getElementById("quiz");
+
+quizData.forEach((item, index) => {
+
+let qDiv = document.createElement("div");
+qDiv.classList.add("question");
+
+let qText = document.createElement("p");
+qText.innerHTML = "<b>" + (index+1) + ". " + item.q + "</b>";
+qDiv.appendChild(qText);
+
+item.options.forEach((opt, i) => {
+
+let btn = document.createElement("button");
+btn.innerHTML = opt;
+
+btn.onclick = function(){
+
+if(btn.disabled) return;
+
+attempted++;
+
+let result = document.createElement("p");
+let explanation = document.createElement("p");
+
+if(i === item.answer){
+score++;
+result.innerHTML = "✅ Correct!";
+result.className = "correct";
+}else{
+result.innerHTML = "❌ Wrong! Correct Answer: " + item.options[item.answer];
+result.className = "wrong";
+}
+
+explanation.innerHTML = "Explanation: " + item.exp;
+explanation.className = "explanation";
+
+qDiv.appendChild(result);
+qDiv.appendChild(explanation);
+
+document.getElementById("score").innerHTML =
+"Score: " + score + " / " + attempted;
+
+Array.from(qDiv.getElementsByTagName("button")).forEach(b => b.disabled = true);
+
+};
+
+qDiv.appendChild(btn);
+
+});
+
+quizDiv.appendChild(qDiv);
+
+});
+
+</script>
+
+</body>
+</html>
